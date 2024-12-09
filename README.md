@@ -45,3 +45,119 @@
     - **Image Repository**: Mention any visual assets and their sources.
 
 Please adhere to these guidelines to ensure a well-structured and successful project.
+
+Project:
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class EasyMeals {
+    private List<String> ingredients;
+    private int servings;
+
+    // this is the default constructor
+    public EasyMeals() {
+        this.ingredients = new ArrayList<>();
+        this.servings = 1; // default is single person
+    }
+
+    // overloaded constructor
+    public EasyMeals(List<String> ingredients, int servings) {
+        this.ingredients = ingredients != null ? ingredients : new ArrayList<>();
+        this.servings = servings;
+    }
+
+    // method to set ingredients
+    public void setIngredients() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the ingredients you have (type 'done' to finish):");
+
+        while (true) {
+            System.out.print("Ingredient: ");
+            String ingredient = scanner.nextLine().trim().toLowerCase();
+            if (ingredient.equals("done")) {
+                break;
+            }
+            ingredients.add(ingredient);
+        }
+    }
+
+    // method to set servings
+    public void setServings() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("\nIs this meal for a family or a single person?");
+        System.out.print("Type 'family' for family or 'single' for single person: ");
+        String choice = scanner.nextLine().trim().toLowerCase();
+
+        if (choice.equals("family")) {
+            servings = 4;
+        } else {
+            servings = 1;
+        }
+    }
+
+    // Method to suggest recipes
+    public void suggestRecipes() {
+        // Put in the code for recipes with their required ingredients
+        String[][] recipes = {
+                {"pasta", "pasta", "tomato sauce", "cheese"},
+                {"omelette", "eggs", "cheese", "milk"},
+                {"salad", "lettuce", "tomato", "cucumber"},
+                {"stir-fry", "chicken", "soy sauce", "vegetables"},
+                {"sandwich", "bread", "cheese", "lettuce"}
+        };
+
+        System.out.println("\nRecipes you can make:");
+        boolean foundRecipe = false;
+
+        for (String[] recipe : recipes) {
+            String recipeName = recipe[0];
+            boolean canMake = true;
+
+            // Check if all ingredients for the recipe are available
+            for (int i = 1; i < recipe.length; i++) {
+                if (!ingredients.contains(recipe[i])) {
+                    canMake = false;
+                    break;
+                }
+            }
+
+            if (canMake) {
+                System.out.println("- " + capitalize(recipeName) + " (Serves " + servings + ")");
+                foundRecipe = true;
+            }
+        }
+
+        if (!foundRecipe) {
+            System.out.println("No recipes matched your ingredients. Try adding more items!");
+        }
+    }
+
+    // Helper method to capitalize recipe names
+    private String capitalize(String word) {
+        if (word == null || word.isEmpty()) return word;
+        return word.substring(0, 1).toUpperCase() + word.substring(1);
+    }
+
+    // Method to display entered ingredients
+    public void displayIngredients() {
+        System.out.println("\nYou entered the following ingredients:");
+        System.out.println(String.join(", ", ingredients));
+    }
+
+    // Main method
+    public static void main(String[] args) {
+        // Using the default constructor
+        EasyMeals planner = new EasyMeals();
+
+        // Input ingredients and servings
+        planner.setIngredients();
+        planner.setServings();
+
+        // Display ingredients and suggest recipes
+        planner.displayIngredients();
+        planner.suggestRecipes();
+    }
+}
+
